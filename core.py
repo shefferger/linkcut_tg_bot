@@ -18,12 +18,14 @@ def main(msg):
         bot.send_message(msg.chat.id, 'Добро пожаловать в сокращатель ссылок! '
                                       'Просто введите ссылку и получите ее сокращенный вариант')
         return
-    payload = {'link_in': msg.text}
+    payload = {'link_in': msg.text, 'userType': 'telegramBot'}
     response = requests.post('http://www.linkcut.ru', data=payload)
+    if response.status_code in (500, 404):
+        return
     bot.send_message(msg.chat.id, response.text)
-    logText = '\n' + str(datetime.datetime.now()) + ' UID: ' + msg.chat.id + ' Generated link: ' + response.text + '\n'
+    logText = str(datetime.datetime.now()) + ' UID: ' + str(msg.chat.id) + ' Generated link: ' + response.text + '\n'
     log(logText)
 
 
-log(str(datetime.datetime.now()) + 'Started Telegram Bot \'LinkCut.ru\'\n')
+log('\n' + str(datetime.datetime.now()) + '\tStarted LinkCut Telegram Bot')
 bot.polling(none_stop=True)
