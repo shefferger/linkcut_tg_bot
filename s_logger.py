@@ -7,7 +7,7 @@ num = 1
 def getName():
     global num
     timeNow = datetime.now()
-    _path = 'logs/' + str(timeNow.day) + '-' + str(timeNow.month) + '-' + str(timeNow.year) + '-' + str(num) + '.txt'
+    _path = 'logs/log-' + str(timeNow.day) + '-' + str(timeNow.month) + '-' + str(timeNow.year) + '-' + str(num) + '.txt'
     if path.exists(_path):
         num += 1
         _path = getName()
