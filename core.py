@@ -1,15 +1,9 @@
 import telebot
 import cfg  # cfg must include your bot TOKEN
 import requests
-import datetime
+import logging as log
 
 bot = telebot.TeleBot(cfg.TOKEN)
-
-
-def log(info):
-    print(info)
-    with open('logs.txt', 'a') as logFile:
-        logFile.write(info)
 
 
 @bot.message_handler(content_types=['text'])
@@ -20,12 +14,12 @@ def main(msg):
         return
     payload = {'link_in': msg.text, 'userType': 'telegramBot'}
     response = requests.post('http://www.linkcut.ru', data=payload)
-    if response.status_code in (500, 404):
+    if response.status_code in (500, 404, 400):
         return
     bot.send_message(msg.chat.id, response.text)
-    logText = str(datetime.datetime.now()) + ' UID: ' + str(msg.chat.id) + ' Generated link: ' + response.text + '\n'
-    log(logText)
+    logText = ' UID: ' + str(msg.chat.id) + ' Generated link: ' + response.text
+    log.log(logText)
 
 
-log('\n' + str(datetime.datetime.now()) + '\tStarted LinkCut Telegram Bot')
+log.log('Started LinkCut Telegram Bot')
 bot.polling(none_stop=True)
