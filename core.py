@@ -1,7 +1,7 @@
 import telebot
 import cfg  # cfg must include your bot TOKEN
 import requests
-import logging as log
+import s_logger as log
 
 bot = telebot.TeleBot(cfg.TOKEN)
 
