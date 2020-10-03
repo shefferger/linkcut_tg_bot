@@ -23,7 +23,7 @@ def main(msg):
         log.log('HTTP Error')
         text = 'Временная ошибка сервера, попробуйте чуть позже'
     bot.send_message(msg.chat.id, text)
-    logText = '\tUID: ' + str(msg.chat.id) + '\tGenerated link: ' + text + '\n'
+    logText = 'UID: ' + str(msg.chat.id) + '\tGenerated link: ' + text + '\n'
     log.log(logText)
 
 
