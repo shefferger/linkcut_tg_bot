@@ -13,11 +13,17 @@ def main(msg):
                                       'Просто введите ссылку и получите ее сокращенный вариант')
         return
     payload = {'link_in': msg.text, 'userType': 'telegramBot'}
-    response = requests.post('http://www.linkcut.ru', data=payload)
-    if response.status_code in (500, 404, 400):
-        return
-    bot.send_message(msg.chat.id, response.text)
-    logText = ' UID: ' + str(msg.chat.id) + ' Generated link: ' + response.text
+    try:
+        response = requests.post('http://www.linkcut.ru', data=payload)
+        text = response.text
+    except requests.exceptions.ConnectionError:
+        log.log('Connection Error')
+        text = 'Временная ошибка сервера, попробуйте чуть позже'
+    except requests.exceptions.BaseHTTPError:
+        log.log('HTTP Error')
+        text = 'Временная ошибка сервера, попробуйте чуть позже'
+    bot.send_message(msg.chat.id, text)
+    logText = '\tUID: ' + str(msg.chat.id) + '\tGenerated link: ' + text + '\n'
     log.log(logText)
 
 
